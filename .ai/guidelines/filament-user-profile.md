@@ -26,6 +26,10 @@ similarly-named conventions.
   `image/*`, SVG included, and an SVG can carry script; `ProfilePhotoUpload`
   narrows it back after calling `avatar()`. Adding SVG to the configuration
   reopens that door.
+- **The photo column only ever points into the photo directory.** The upload
+  refuses paths the browser made up, and the route and the lifecycle ignore
+  anything outside `photo.directory` (`UserProfile::isPhotoPath()`). To reuse a
+  file stored elsewhere, copy it into the directory; do not loosen either check.
 - **The photo column must be fillable.** The profile page saves through
   `$user->update()`.
 - **Do not delete photo files by hand.** The trait deletes the old file after

@@ -5,7 +5,9 @@ a user account.
 
 - **Photos stay private.** Stored on a private disk and handed out only through
   an authorised route: to their owner, and to whoever your application allows
-  (the people sharing a team with them, say).
+  (the people sharing a team with them, say). The upload refuses file paths
+  the browser made up, and nothing outside the photo directory is ever handed
+  out or deleted.
 - **No third-party avatar service.** People without a photo get their initials
   on a colour derived from their name, drawn locally as an SVG — Filament's
   default asks ui-avatars.com, which receives every name shown in the panel.

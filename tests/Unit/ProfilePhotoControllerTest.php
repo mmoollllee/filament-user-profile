@@ -39,6 +39,15 @@ it('lets nobody in without signing in', function (): void {
     $this->getJson($this->owner->profilePhotoUrl())->assertUnauthorized();
 });
 
+it('hands out nothing outside the photo directory, not even to its owner', function (): void {
+    Storage::disk('local')->put('invoices/2026-09.pdf', 'someone else\'s file');
+    $owner = $this->user(['profile_photo_path' => 'invoices/2026-09.pdf']);
+
+    $this->actingAs($owner)
+        ->get($owner->profilePhotoUrl())
+        ->assertNotFound();
+});
+
 it('answers "not found" without a photo, a file or a person', function (): void {
     $this->actingAs($this->stranger)
         ->get(route('user-profile.photo', ['user' => $this->stranger->id]))

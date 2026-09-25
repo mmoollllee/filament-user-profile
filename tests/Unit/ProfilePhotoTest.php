@@ -55,6 +55,19 @@ it('keeps the photo when the change is rolled back', function (): void {
     Storage::disk('local')->assertExists('profile-photos/old.jpg');
 });
 
+it('never deletes a file outside the photo directory', function (): void {
+    Storage::disk('local')->put('invoices/2026-09.pdf', 'someone else\'s file');
+    Storage::disk('local')->put('invoices/2026-10.pdf', 'someone else\'s file');
+    $replaced = $this->user(['profile_photo_path' => 'invoices/2026-09.pdf']);
+    $deleted = $this->user(['profile_photo_path' => 'invoices/2026-10.pdf']);
+
+    $replaced->update(['profile_photo_path' => 'profile-photos/new.jpg']);
+    $deleted->delete();
+
+    Storage::disk('local')->assertExists('invoices/2026-09.pdf');
+    Storage::disk('local')->assertExists('invoices/2026-10.pdf');
+});
+
 it('removes the photo on request and with the account', function (): void {
     $user = $this->user(['profile_photo_path' => 'profile-photos/old.jpg']);
 

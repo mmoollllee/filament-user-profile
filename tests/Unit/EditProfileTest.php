@@ -50,6 +50,17 @@ it('refuses SVG files, which can carry script', function (): void {
     expect($this->me->fresh()->profile_photo_path)->toBeNull();
 });
 
+it('refuses a photo path the browser made up', function (): void {
+    Storage::disk('local')->put('invoices/2026-09.pdf', 'someone else\'s file');
+
+    Livewire::test(EditProfile::class)
+        ->set('data.profile_photo_path', ['tampered' => 'invoices/2026-09.pdf'])
+        ->call('save')
+        ->assertHasFormErrors(['profile_photo_path']);
+
+    expect($this->me->fresh()->profile_photo_path)->toBeNull();
+});
+
 it('removes the photo and its file', function (): void {
     Storage::disk('local')->put('profile-photos/ich.jpg', 'jpeg-bytes');
     $this->me->update(['profile_photo_path' => 'profile-photos/ich.jpg']);

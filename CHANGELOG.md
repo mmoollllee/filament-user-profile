@@ -2,6 +2,15 @@
 
 All notable changes to `mmoollllee/filament-user-profile` will be documented in this file.
 
+## 0.1.1 - 2026-09-25
+
+- Security: the photo upload refuses file paths the browser made up
+  (`preventFilePathTampering()`), and the photo route and the file lifecycle
+  only touch files directly inside `photo.directory`
+  (`UserProfile::isPhotoPath()`). Before, a user could point their photo at any
+  file on the photo disk, read it through their own photo URL and have it
+  deleted with their next photo change.
+
 ## 0.1.0 - 2026-09-25
 
 Initial release.

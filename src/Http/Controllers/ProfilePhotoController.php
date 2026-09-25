@@ -33,7 +33,7 @@ class ProfilePhotoController
         /** @var FilesystemAdapter $disk */
         $disk = Storage::disk(UserProfile::photoDisk());
 
-        abort_unless(is_string($path) && $path !== '' && $disk->exists($path), 404);
+        abort_unless(is_string($path) && UserProfile::isPhotoPath($path) && $disk->exists($path), 404);
 
         return $disk->response($path, headers: [
             'Cache-Control' => 'private, max-age='.UserProfile::photoMaxAge(),

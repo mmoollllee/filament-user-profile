@@ -86,7 +86,7 @@ trait InteractsWithProfilePhoto
      */
     protected function forgetPhotoFile(mixed $path): void
     {
-        if (! is_string($path) || $path === '') {
+        if (! is_string($path) || ! UserProfile::isPhotoPath($path)) {
             return;
         }
 

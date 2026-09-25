@@ -71,6 +71,20 @@ class UserProfile
     }
 
     /**
+     * Whether a path names a file directly inside the photo directory — the
+     * only files the photo route hands out and the photo lifecycle deletes.
+     * The disk may hold other files, and the photo column is filled from a
+     * form field whose value the browser controls.
+     */
+    public static function isPhotoPath(string $path): bool
+    {
+        $directory = trim(static::photoDirectory(), '/');
+        $prefix = $directory === '' ? '' : preg_quote($directory, '#').'/';
+
+        return preg_match('#\A'.$prefix.'[^/\\\\.][^/\\\\]*\z#', $path) === 1;
+    }
+
+    /**
      * Edge length in pixels a photo is cropped and scaled to before upload.
      */
     public static function photoSize(): int

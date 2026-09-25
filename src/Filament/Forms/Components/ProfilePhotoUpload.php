@@ -73,6 +73,9 @@ class ProfilePhotoUpload extends FileUpload
             ->disk(UserProfile::photoDisk())
             ->directory(UserProfile::photoDirectory())
             ->visibility('private')
+            // A submitted path must be the one stored on the record: the value
+            // is the browser's, and the disk may hold other people's files.
+            ->preventFilePathTampering()
             ->getUploadedFileUsing(function (string $file, ?Model $record): ?array {
                 $disk = Storage::disk(UserProfile::photoDisk());
 
