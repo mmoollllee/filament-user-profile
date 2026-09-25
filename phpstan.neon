@@ -1,0 +1,7 @@
+parameters:
+    level: 6
+    paths:
+        - src
+    ignoreErrors:
+        # The trait is consumed by host models; PHPStan analyses it there.
+        - identifier: trait.unused
